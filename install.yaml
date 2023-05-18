@@ -1,0 +1,63 @@
+---
+- name: folders creation
+  hosts: all
+  become: false
+  vars:
+    ansible_user: user
+    ansible_password: school1516
+
+  tasks:
+
+    - name: get path to folder
+      command: xdg-user-dir DESKTOP
+      register: desktop_path  
+  
+    - name: directory`s creation
+      file:
+        path: '{{ desktop_path.stdout }}/{{ item }}' 
+        state: directory
+        mode: u+rwx,g+rw,o+rwx
+      loop:
+        - students/10-classes/10А
+        - students/10-classes/10Б
+        - students/10-classes/10В
+        - students/10-classes/10Г
+        - students/10-classes/10Д
+        - students/11-classes/11А
+        - students/11-classes/11Б
+        - students/11-classes/11В
+        - students/11-classes/11Г
+        - students/11-classes/11Д
+        - students/9-classes/9А
+        - students/9-classes/9Б
+        - students/9-classes/9В
+        - students/9-classes/9Г
+ 
+        - students/9-classes/9Д
+        - students/8-classes/8А
+        - students/8-classes/8Б
+        - students/8-classes/8В
+        - students/8-classes/8Г
+        - students/8-classes/8Д
+
+- name: install pychrm
+  hosts: all
+  become: false
+  vars:
+    ansible_user: admin
+    ansible_password: QaSeRoX
+
+  tasks:
+    - name: snap install
+      command: sudo apt-get install snapd -y
+
+    - name: run
+      command: sudo systemctl start snapd
+
+    - name: enable
+      command: sudo systemctl enable snapd
+
+    - name: install
+      command: sudo snap install pycharm-community --classic
+
+    

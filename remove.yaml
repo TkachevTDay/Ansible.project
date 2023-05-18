@@ -1,0 +1,33 @@
+---
+- name: folders remove
+  hosts: all
+  become: false
+  vars:
+    ansible_user: user
+    ansible_password: school1516
+
+  tasks:
+
+    - name: get path to folder
+      command: xdg-user-dir DESKTOP
+      register: desktop_path  
+  
+    - name: directory`s delete
+      file:
+        path: '{{ desktop_path.stdout }}/{{ item }}' 
+        state: absent
+        mode: u+rw,g+rw,o+rwx
+
+      loop:
+        - students
+
+- name: pycharm remove
+  hosts: all
+  become: true
+  vars:
+    ansible_user: admin
+    ansible_password: QaSeRoX
+  tasks:
+
+    - name: remove pycharm
+      command: snap remove pycharm-community
